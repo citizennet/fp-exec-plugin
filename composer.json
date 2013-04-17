@@ -1,8 +1,8 @@
 {
-    "name": "citizennet/fpExecPlugin",
+    "name": "citizennet/fpexecplugin",
     "type": "symfony1-plugin",
     "description": "beats me",
     "keywords": ["php"],
     "license": "MIT",
-    "homepage": "https://github.com/citizennet/fpExecPlugin"
+    "homepage": "https://github.com/citizennet/fpexecplugin"
 }
