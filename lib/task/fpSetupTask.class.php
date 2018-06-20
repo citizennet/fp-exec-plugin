@@ -16,7 +16,7 @@ EOF;
 
     $this->addOptions(array(
       new sfCommandOption('files', null, sfCommandOption::PARAMETER_REQUIRED, 'A file contains sets of files to be processed'),
-      new sfCommandOption('vars', null, sfCommandOption::PARAMETER_REQUIRED, 'A file contains sets of setup related data, such as connection to database'),
+//      new sfCommandOption('vars', null, sfCommandOption::PARAMETER_REQUIRED, 'A file contains sets of setup related data, such as connection to database'),
       new sfCommandOption('verbose', null, sfCommandOption::PARAMETER_NONE, 'Show more info on what is going on during the execution'),
       new sfCommandOption('ovewrite', null, sfCommandOption::PARAMETER_NONE, 'Show more info on what is going on during the execution')));
   }
@@ -30,7 +30,12 @@ EOF;
     $this->optionsValues = $options;
 
     $this->logSectionVerbose('parse', '`vars` file');
-    $vars = $this->_parseConfigFile($options['vars']);
+    //$vars = $this->_parseConfigFile($options['vars']);
+
+    $vars = [];
+    foreach($_SERVER as $key => $val) {
+      $vars[strtolower(str_replace("_", ".", $key))] = $val;
+    }
 
     $this->logSectionVerbose('parse', '`files` file');
     $files = $this->_parseConfigFile($options['files']);
