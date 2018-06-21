@@ -34,6 +34,12 @@ EOF;
 
     $vars = [];
     foreach($_SERVER as $key => $val) {
+      if(is_string($val)) {
+        if(substr($val, 0, 2) == '"[' && substr($val, -2) == ']"') {
+          $val = json_decode(json_decode($val), true);
+        }
+      }
+
       $vars[strtolower(str_replace("_", ".", $key))] = $val;
     }
 
