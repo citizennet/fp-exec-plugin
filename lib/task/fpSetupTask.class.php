@@ -40,6 +40,8 @@ EOF;
           if(is_string($val)) {
             $val = json_decode($val, true);
           }
+        } else if(substr($val, 0, 1) == '"' && substr($val, -1) == '"') {
+          $val = substr($val, 1, -1);
         }
       }
 
@@ -124,13 +126,15 @@ EOF;
     foreach($matches as $key) {
       if(strpos($key, "[0]") !== false) {
         $bits = explode("[0]", $key);
-        if (array_key_exists($bits[0], $input_vars)) {
+        if (isset($input_vars[$bits[0]][0][$bits[1]])) {
           $val = $input_vars[$bits[0]][0][$bits[1]];
           $vars["%%{$key}%%"] = $val;
 
           $this->logVerbose("    %%{$key}%% => $val");
 
           continue;
+        } else {
+          $this->logVerbose($key . " missing ");
         }
       }
 
