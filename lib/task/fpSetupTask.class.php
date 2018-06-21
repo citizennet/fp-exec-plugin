@@ -36,7 +36,10 @@ EOF;
     foreach($_SERVER as $key => $val) {
       if(is_string($val)) {
         if(substr($val, 0, 2) == '"[' && substr($val, -2) == ']"') {
-          $val = json_decode(json_decode($val), true);
+          $val = json_decode($val, true);
+          if(is_string($val)) {
+            $val = json_decode($val, true);
+          }
         }
       }
 
@@ -119,6 +122,18 @@ EOF;
 
     $vars = array();
     foreach($matches as $key) {
+      if(strpos($key, "[0]") !== false) {
+        $bits = explode("[0]", $key);
+        if (array_key_exists($bits[0], $input_vars)) {
+          $val = $input_vars[$bits[0]][0][$bits[1]];
+          $vars["%%{$key}%%"] = $val;
+
+          $this->logVerbose("    %%{$key}%% => $val");
+
+          continue;
+        }
+      }
+
       if (array_key_exists($key, $input_vars)) {
         $vars["%%{$key}%%"] = $input_vars[$key];
 
