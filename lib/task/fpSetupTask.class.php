@@ -34,6 +34,10 @@ EOF;
 
     $vars = [];
     foreach($_SERVER as $key => $val) {
+      if(strpos($key, "CN_") !== 0) {
+        continue;
+      }
+
       if(is_string($val)) {
         if(substr($val, 0, 2) == '"[' && substr($val, -2) == ']"') {
           $val = json_decode($val, true);
@@ -45,7 +49,9 @@ EOF;
         }
       }
 
-      $vars[strtolower(str_replace("_", ".", $key))] = $val;
+      $key = substr($key, 3);
+      $key = strtolower(str_replace(["__","_"], [".","."], $key));
+      $vars[$key] = $val;
     }
 
     $this->logSectionVerbose('parse', '`files` file');
